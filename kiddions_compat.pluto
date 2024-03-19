@@ -1,0 +1,55 @@
+pluto_use "0.8.0"
+
+util.require_natives("3095a")
+
+local stand = menu
+
+localplayer = {
+	function get_position()
+		return players.get_pos(players.user())
+	end,
+}
+
+menu = {
+	add_action = function(name, callback)
+		stand.my_root():action(name, {}, "", callback)
+	end,
+	add_toggle = function(name, getter, setter)
+		stand.my_root():toggle(name, {}, "", function(value)
+			setter(value)
+		end)
+	end,
+}
+
+sleep = |seconds| -> util.yield(seconds * 1000)
+
+local class ScriptInst
+	function __construct(public name)
+		self.name_hash = util.joaat(name)
+	end
+
+	function is_active()
+		return SCRIPT.GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(self.name_hash) ~= 0
+	end
+
+	function get_int(offset)
+		return memory.read_int(memory.script_local(self.name_hash, offset))
+	end
+
+	function set_int(offset, value)
+		memory.write_int(memory.script_local(self.name_hash, offset), value)
+	end
+end
+
+script = function(name)
+	return new ScriptInst(name)
+end
+
+global = {
+	get_int = function(offset)
+		return memory.read_int(memory.script_global(offset))
+	end,
+	set_int = function(offset, value)
+		memory.write_int(memory.script_global(offset), value)
+	end
+}
