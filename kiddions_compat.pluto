@@ -45,7 +45,7 @@ script = function(name)
 	return new ScriptInst(name)
 end
 
-global = {
+globals = {
 	get_int = function(offset)
 		return memory.read_int(memory.script_global(offset))
 	end,
