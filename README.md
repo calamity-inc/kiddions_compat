@@ -1,4 +1,4 @@
-Proof-of-concept: Loading Lua scripts for Kiddion's Modest Menu via Stand.
+Allows you to load Lua scripts for Kiddion's Modest Menu via Stand.
 
 ## Usage
 
